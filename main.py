@@ -70,7 +70,14 @@ def get_password():
 
 # Function to save passwords to a JSON file 
 def save_passwords():
- """
+    try:
+        with open("vault.txt", "w", encoding="utf-8") as file:
+            for website, username, encrypted_password in zip(websites, usernames, encrypted_passwords):
+                file.write(f"{website},{username},{encrypted_password}\n")
+        print("Passwords saved successfully!")
+    except Exception as e:
+        print("Oops, something went wrong while saving:", e)
+         """
     Save the password vault to a file.
 
     This function should save passwords, websites, and usernames to a text
@@ -79,18 +86,33 @@ def save_passwords():
     Returns:
         None
     """
+    
 
     Returns:
         None
-    """
+    
 
 # Function to load passwords from a JSON file 
-def load_passwords():
-     """
-    Load passwords from a file into the password vault.
 
-    This function should load passwords, websites, and usernames from a text
-    file named "vault.txt" (or a more generic name) and populate the respective lists.
+def load_passwords(vault.txt):
+    try:
+        with open("vault.txt", "r", encoding="utf-8") as file:
+            for line in file:
+                parts = line.strip().split(",")
+                if len(parts) == 3:
+                    website, username, encrypted_password = parts
+                    websites.append(website)
+                    usernames.append(username)
+                    encrypted_passwords.append(encrypted_password)
+        print("Passwords loaded successfully!")
+    except FileNotFoundError:
+        print("No saved passwords found. Starting fresh!")
+    except Exception as e:
+        print("Oops, something went wrong while loading:", e)
+     
+    "# Load passwords from a file into the password vault.
+"""This function should load passwords, websites, and usernames from a text
+file named "vault.txt" (or a more generic name) and populate the respective lists."""
 
     Returns:
         None

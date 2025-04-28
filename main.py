@@ -29,15 +29,18 @@ def is_strong_password(password):
 
 # Password generator function (optional)
 def generate_password(length):
-     """
-    Generate a random strong password of the specified length.
+    if length < 8:
+        print("Password length should be at least 8 for strength.")
+        return ""
+ all_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/"
 
-    Args:
-        length (int): The desired length of the password.
+# Define possible characters
+all_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/"
 
-    Returns:
-        str: A random strong password.
-    """
+# Randomly select characters
+password = ''.join(random.choice(all_characters) for _ in range(length))
+
+return password
 
 # Initialize empty lists to store encrypted passwords, websites, and usernames
 encrypted_passwords = []
@@ -77,24 +80,13 @@ def save_passwords():
         print("Passwords saved successfully!")
     except Exception as e:
         print("Oops, something went wrong while saving:", e)
-         """
-    Save the password vault to a file.
+Returns:
+    None
 
-    This function should save passwords, websites, and usernames to a text
-    file named "vault.txt" in a structured format.
-
-    Returns:
-        None
-    """
-    
-
-    Returns:
-        None
-    
 
 # Function to load passwords from a JSON file 
 
-def load_passwords(vault.txt):
+def load_passwords (vault.txt):
     try:
         with open("vault.txt", "r", encoding="utf-8") as file:
             for line in file:

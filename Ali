@@ -1,0 +1,98 @@
+# ======= Caesar Cipher Encryption/Decryption =======
+
+def caesar_encrypt(text, shift):
+    encrypted_text = ""
+    for char in text:
+        if char.isalpha():
+            shifted = ord(char) + shift
+            if char.islower():
+                if shifted > ord('z'):
+                    shifted -= 26
+            elif char.isupper():
+                if shifted > ord('Z'):
+                    shifted -= 26
+            encrypted_text += chr(shifted)
+        else:
+            encrypted_text += char
+    return encrypted_text
+
+def caesar_decrypt(text, shift):
+    return caesar_encrypt(text, -shift)
+
+# ======= Helper functions to match encrypt()/decrypt() naming =======
+
+def encrypt(password):
+    shift = 3
+    return caesar_encrypt(password, shift)
+
+def decrypt(encrypted_password):
+    shift = 3
+    return caesar_decrypt(encrypted_password, shift)
+
+# ======= Global In-Memory Store =======
+
+passwords: dict[str, tuple[str, str]] = {}
+
+# ======= Add Password =======
+
+def add_password(service: str, username: str, password: str) -> None:
+    """
+    Encrypts and stores credentials for a service.
+    Overwrites existing entry if the service is already present.
+    """
+    encrypted = encrypt(password)
+    if service in passwords:
+        print(f"Warning: Overwriting credentials for '{service}'.")
+    passwords[service] = (username, encrypted)
+
+# ======= Get Password =======
+
+def get_password(service: str) -> tuple[str, str] | None:
+    """
+    Retrieves and decrypts credentials for a service.
+    Returns (username, password) or None if not found.
+    """
+    entry = passwords.get(service)
+    if entry is None:
+        print(f"No entry found for '{service}'.")
+        return None
+    username, encrypted = entry
+    return username, decrypt(encrypted)
+
+# ======= Simple Test =======
+
+def main():
+    while True:
+        print("\nPassword Manager Menu:")
+        print("1. Add Password")
+        print("2. Get Password")
+        print("3. Quit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            service = input("Enter service name: ")
+            username = input("Enter username: ")
+            password = input("Enter password: ")
+            add_password(service, username, password)
+            print("Password added successfully!")
+        
+        elif choice == "2":
+            service = input("Enter service name: ")
+            result = get_password(service)
+            if result:
+                username, password = result
+                print(f"Username: {username}")
+                print(f"Password: {password}")
+        
+        elif choice == "3":
+            print("Goodbye!")
+            break
+        
+        else:
+            print("Invalid choice. Please try again.")
+
+# ======= Run the Program =======
+
+if __name__ == "__main__":
+    main()

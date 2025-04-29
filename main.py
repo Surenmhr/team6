@@ -27,15 +27,19 @@ def caesar_decrypt(text, shift):
 def is_strong_password(password):
     # ...
 
-# Password generator function (optional)
-def generate_password(length):
+# Password generator function (optional
+ def generate_password(length):
     if length < 8:
         print("Password length should be at least 8 for strength.")
         return ""
- all_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/"
+    
+    # Define possible characters
+    all_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/"
 
-# Define possible characters
-all_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/"
+    # Randomly select characters
+    password = ''.join(random.choice(all_characters) for _ in range(length))
+
+    return password
 
 # Randomly select characters
 password = ''.join(random.choice(all_characters) for _ in range(length))
@@ -55,8 +59,7 @@ def add_password():
     This function should prompt the user for the website, username,  and password and store them to lits with same index. Optionally, it should check password strengh with the function is_strong_password. It may also include an option for the user to
     generate a random strong password by calling the generate_password function.
 
-    Returns:
-        None
+    return None
     """
 
 # Function to retrieve a password 
@@ -80,13 +83,13 @@ def save_passwords():
         print("Passwords saved successfully!")
     except Exception as e:
         print("Oops, something went wrong while saving:", e)
-Returns:
-    None
+ Returns:
+     None
 
 
 # Function to load passwords from a JSON file 
-
-def load_passwords (vault.txt):
+ 
+ def load_passwords():
     try:
         with open("vault.txt", "r", encoding="utf-8") as file:
             for line in file:
@@ -102,12 +105,11 @@ def load_passwords (vault.txt):
     except Exception as e:
         print("Oops, something went wrong while loading:", e)
      
-    "# Load passwords from a file into the password vault.
+    "# Load passwords from a file into the password vault."
 """This function should load passwords, websites, and usernames from a text
 file named "vault.txt" (or a more generic name) and populate the respective lists."""
-
-    Returns:
-        None
+Returns:
+    None
 
   # Main method
 def main():

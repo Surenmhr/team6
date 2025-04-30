@@ -25,7 +25,14 @@ def caesar_decrypt(text, shift):
 
 # Password strength checker function (optional)
 def is_strong_password(password):
-    # ...
+    if len(password) < 8:
+        return False
+    has_lower = any(c.islower() for c in password)
+    has_upper = any(c.isupper() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?/" for c in password)
+
+    return has_lower and has_upper and has_digit and has_special
 
 # Password generator function (optional
  def generate_password(length):

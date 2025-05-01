@@ -85,13 +85,17 @@ def save_passwords():
         print("Passwords saved successfully!")
     except Exception as e:
         print("Oops, something went wrong while saving:", e)
-" Returns:
-     None
-"
 
-# Function to load passwords from a JSON file 
- 
- def load_passwords():
+# Function to load passwords from a JSON file
+
+# Function to load passwords from a text file
+def load_passwords():
+    """
+    Load passwords from a text file into the password vault.
+
+    This function reads the "vault.txt" file and populates the
+    websites, usernames, and encrypted_passwords lists.
+    """
     try:
         with open("vault.txt", "r", encoding="utf-8") as file:
             for line in file:
@@ -106,40 +110,34 @@ def save_passwords():
         print("No saved passwords found. Starting fresh!")
     except Exception as e:
         print("Oops, something went wrong while loading:", e)
-     
-    "# Load passwords from a file into the password vault."
-"""This function should load passwords, websites, and usernames from a text
-file named "vault.txt" (or a more generic name) and populate the respective lists."""
-Returns:
-    None
 
-  # Main method
+# Main method
 def main():
-# implement user interface 
-
-  while True:
-    print("\nPassword Manager Menu:")
-    print("1. Add Password")
-    print("2. Get Password")
-    print("3. Save Passwords")
-    print("4. Load Passwords")
-    print("5. Quit")
-    
-    choice = input("Enter your choice: ")
-    
-    if choice == "1":
-        add_password()
-    elif choice == "2":
-        get_password()
-    elif choice == "3":
-        save_passwords()
-    elif choice == "4":
-        passwords = load_passwords()
-        print("Passwords loaded successfully!")
-    elif choice == "5":
-        break
-    else:
-        print("Invalid choice. Please try again.")
+    """
+    Main function to implement the user interface.
+    """
+    while True:
+        print("\nPassword Manager Menu:")
+        print("1. Add Password")
+        print("2. Get Password")
+        print("3. Save Passwords")
+        print("4. Load Passwords")
+        print("5. Quit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            print("Add Password functionality is not implemented yet.")
+        elif choice == "2":
+            print("Get Password functionality is not implemented yet.")
+        elif choice == "3":
+            save_passwords()
+        elif choice == "4":
+            load_passwords()
+        elif choice == "5":
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 # Execute the main function when the program is run
 if __name__ == "__main__":

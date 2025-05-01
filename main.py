@@ -34,8 +34,8 @@ def is_strong_password(password):
 
     return has_lower and has_upper and has_digit and has_special
 
-# Password generator function (optional
- def generate_password(length):
+# Password generator function (optional)
+def generate_password(length):
     if length < 8:
         print("Password length should be at least 8 for strength.")
         return ""
@@ -47,11 +47,6 @@ def is_strong_password(password):
     password = ''.join(random.choice(all_characters) for _ in range(length))
 
     return password
-
-# Randomly select characters
-password = ''.join(random.choice(all_characters) for _ in range(length))
-
-return password
 
 # Initialize empty lists to store encrypted passwords, websites, and usernames
 encrypted_passwords = []
@@ -90,9 +85,9 @@ def save_passwords():
         print("Passwords saved successfully!")
     except Exception as e:
         print("Oops, something went wrong while saving:", e)
- Returns:
+" Returns:
      None
-
+"
 
 # Function to load passwords from a JSON file 
  

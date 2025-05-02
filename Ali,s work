@@ -1,5 +1,6 @@
-# ======= Caesar Cipher Encryption/Decryption =======
+# password_manager.py
 
+# Caesar cipher functions
 def caesar_encrypt(text, shift):
     encrypted_text = ""
     for char in text:
@@ -19,48 +20,35 @@ def caesar_encrypt(text, shift):
 def caesar_decrypt(text, shift):
     return caesar_encrypt(text, -shift)
 
-# ======= Helper functions to match encrypt()/decrypt() naming =======
+# In-memory password storage
+passwords = {}
 
-def encrypt(password):
-    shift = 3
-    return caesar_encrypt(password, shift)
+SHIFT = 3  # Caesar cipher shift value
 
-def decrypt(encrypted_password):
-    shift = 3
-    return caesar_decrypt(encrypted_password, shift)
-
-# ======= Global In-Memory Store =======
-
-passwords: dict[str, tuple[str, str]] = {}
-
-# ======= Add Password =======
-
-def add_password(service: str, username: str, password: str) -> None:
+def add_password(service, username, password):
     """
-    Encrypts and stores credentials for a service.
-    Overwrites existing entry if the service is already present.
+    Add or update a password for a given service.
+    Encrypt the password before storing.
     """
-    encrypted = encrypt(password)
-    if service in passwords:
-        print(f"Warning: Overwriting credentials for '{service}'.")
-    passwords[service] = (username, encrypted)
+    encrypted_password = caesar_encrypt(password, SHIFT)
+    passwords[service] = {
+        "username": username,
+        "password": encrypted_password
+    }
 
-# ======= Get Password =======
-
-def get_password(service: str) -> tuple[str, str] | None:
+def get_password(service):
     """
-    Retrieves and decrypts credentials for a service.
-    Returns (username, password) or None if not found.
+    Retrieve and decrypt the password for a given service.
+    Returns None if the service is not found.
     """
     entry = passwords.get(service)
-    if entry is None:
-        print(f"No entry found for '{service}'.")
+    if not entry:
         return None
-    username, encrypted = entry
-    return username, decrypt(encrypted)
-
-# ======= Simple Test =======
-
+    decrypted_password = caesar_decrypt(entry["password"], SHIFT)
+    return {
+        "username": entry["username"],
+        "password": decrypted_password
+    }
 def main():
     while True:
         print("\nPassword Manager Menu:")

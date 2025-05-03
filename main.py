@@ -53,28 +53,35 @@ encrypted_passwords = []
 websites = []
 usernames = []
 
-# Function to add a new password 
-def add_password():
+# In-memory password storage
+passwords = {}
+
+SHIFT = 3  # Caesar cipher shift value
+
+def add_password(service, username, password):
     """
-    Add a new password to the password manager.
-
-    This function should prompt the user for the website, username,  and password and store them to lits with same index. Optionally, it should check password strengh with the function is_strong_password. It may also include an option for the user to
-    generate a random strong password by calling the generate_password function.
-
-    return None
+    Add or update a password for a given service.
+    Encrypt the password before storing.
     """
+    encrypted_password = caesar_encrypt(password, SHIFT)
+    passwords[service] = {
+        "username": username,
+        "password": encrypted_password
+    }
 
-# Function to retrieve a password 
-def get_password():
+def get_password(service):
     """
-    Retrieve a password for a given website.
-
-    This function should prompt the user for the website name and
-    then display the username and decrypted password for that website.
-
-    Returns:
-        None
+    Retrieve and decrypt the password for a given service.
+    Returns None if the service is not found.
     """
+    entry = passwords.get(service)
+    if not entry:
+        return None
+    decrypted_password = caesar_decrypt(entry["password"], SHIFT)
+    return {
+        "username": entry["username"],
+        "password": decrypted_password
+    }
 
 # Function to save passwords to a JSON file 
 def save_passwords():

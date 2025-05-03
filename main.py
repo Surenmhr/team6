@@ -78,36 +78,58 @@ def get_password():
 
 # Function to save passwords to a JSON file 
 def save_passwords():
+    """
+    Saves the websites, usernames, and encrypted passwords to 'vault.txt' in JSON format.
+    """
+
     try:
+        # Combine all data into a list of dictionaries
+        data_to_save = []
+        for i in range(len(websites)):
+            entry = {
+                "website": websites[i],
+                "username": usernames[i],
+                "password": encrypted_passwords[i]
+            }
+            data_to_save.append(entry)
+          # Write the data to 'vault.txt' using JSON
         with open("vault.txt", "w", encoding="utf-8") as file:
-            for website, username, encrypted_password in zip(websites, usernames, encrypted_passwords):
-                file.write(f"{website},{username},{encrypted_password}\n")
+            json.dump(data_to_save, file, indent=4)
+        
         print("Passwords saved successfully!")
+
     except Exception as e:
         print("Oops, something went wrong while saving:", e)
-
+        
 # Function to load passwords from a JSON file
 
-# Function to load passwords from a text file
 def load_passwords():
     """
-    Load passwords from a text file into the password vault.
-
-    This function reads the "vault.txt" file and populates the
-    websites, usernames, and encrypted_passwords lists.
+    Loads websites, usernames, and encrypted passwords from 'vault.txt' JSON file.
+    Populates the global lists: websites, usernames, and encrypted_passwords.
     """
+
+    global websites, usernames, encrypted_passwords  # needed to update global variables
+
     try:
         with open("vault.txt", "r", encoding="utf-8") as file:
-            for line in file:
-                parts = line.strip().split(",")
-                if len(parts) == 3:
-                    website, username, encrypted_password = parts
-                    websites.append(website)
-                    usernames.append(username)
-                    encrypted_passwords.append(encrypted_password)
+            loaded_data = json.load(file)
+
+            # Clear existing lists first
+            websites.clear()
+            usernames.clear()
+            encrypted_passwords.clear()
+
+            # Fill the lists with loaded data
+            for entry in loaded_data:
+                websites.append(entry["website"])
+                usernames.append(entry["username"])
+                encrypted_passwords.append(entry["password"])
+        
         print("Passwords loaded successfully!")
+
     except FileNotFoundError:
-        print("No saved passwords found. Starting fresh!")
+        print("No saved password file found (vault.txt).")
     except Exception as e:
         print("Oops, something went wrong while loading:", e)
 

@@ -153,14 +153,16 @@ def main():
         
         choice = input("Enter your choice: ")
         
+        
         if choice == "1":
-            print("Add Password functionality is not implemented yet.")
+            add_password()
         elif choice == "2":
-            print("Get Password functionality is not implemented yet.")
+            get_password()
         elif choice == "3":
             save_passwords()
         elif choice == "4":
-            load_passwords()
+            passwords = load_passwords()
+            print("Passwords loaded successfully!")
         elif choice == "5":
             break
         else:

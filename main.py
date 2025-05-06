@@ -23,58 +23,63 @@ def caesar_encrypt(text, shift):
 def caesar_decrypt(text, shift):
     return caesar_encrypt(text, -shift)
 
-# Password strength checker function (optional)
+# Password strength checker function
 def is_strong_password(password):
-    if len(password) < 8:
-        return False
-    has_lower = any(c.islower() for c in password)
-    has_upper = any(c.isupper() for c in password)
-    has_digit = any(c.isdigit() for c in password)
-    has_special = any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?/" for c in password)
-
-    return has_lower and has_upper and has_digit and has_special
+    if (len(password) >= 8 and
+        re.search(r"[A-Z]", password) and
+        re.search(r"[a-z]", password) and
+        re.search(r"[0-9]", password) and
+        re.search(r"[!@#$%^&*(),.?\":{}|<>]", password)):
+        return True
+    return False
 
 # Password generator function (optional)
 def generate_password(length):
+    """
+    Generate a random strong password of the specified length.
+    """
     if length < 8:
-        print("Password length should be at least 8 for strength.")
-        return ""
-    
-    # Define possible characters
-    all_characters = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/"
+        raise ValueError("Password length should be at least 8 characters.")
 
-    # Randomly select characters
-    password = ''.join(random.choice(all_characters) for _ in range(length))
-
-    return password
+    characters = string.ascii_letters + string.digits + "!@#$%^&*(),.?\":{}|<>"
+    return ''.join(random.choice(characters) for _ in range(length))
 
 # Initialize empty lists to store encrypted passwords, websites, and usernames
 encrypted_passwords = []
 websites = []
 usernames = []
 
+# In-memory password storage
+passwords = {}
+
+SHIFT = 3  # Caesar cipher shift value
 # Function to add a new password 
-def add_password():
+def add_password(service, username, password):
     """
-    Add a new password to the password manager.
-
-    This function should prompt the user for the website, username,  and password and store them to lits with same index. Optionally, it should check password strengh with the function is_strong_password. It may also include an option for the user to
-    generate a random strong password by calling the generate_password function.
-
-    return None
+    Add or update a password for a given service.
+    Encrypt the password before storing.
     """
+    encrypted_password = caesar_encrypt(password, SHIFT)
+    passwords[service] = {
+        "username": username,
+        "password": encrypted_password
+    }
+
 
 # Function to retrieve a password 
-def get_password():
+def get_password(service):
     """
-    Retrieve a password for a given website.
-
-    This function should prompt the user for the website name and
-    then display the username and decrypted password for that website.
-
-    Returns:
-        None
+    Retrieve and decrypt the password for a given service.
+    Returns None if the service is not found.
     """
+    entry = passwords.get(service)
+    if not entry:
+        return None
+    decrypted_password = caesar_decrypt(entry["password"], SHIFT)
+    return {
+        "username": entry["username"],
+        "password": decrypted_password
+    }
 
 # Function to save passwords to a JSON file 
 def save_passwords():
